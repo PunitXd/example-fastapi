@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: punitxd-example-fastapi
+  namespace: kairo-punitxd-example-fastapi
+  labels:
+    app: punitxd-example-fastapi
+    app.kubernetes.io/managed-by: kairo
+spec:
+  # Traefik is the only way in. It answers on localhost:80, and the app's
+  # public link (a Cloudflare tunnel) points at it with this Host header
+  ingressClassName: traefik
+  rules:
+    - host: punitxd-example-fastapi.kairo.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: punitxd-example-fastapi
+                port:
+                  number: 80
